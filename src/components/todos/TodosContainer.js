@@ -3,8 +3,12 @@ import { connect } from 'react-redux'
 import Todo from './Todo'
 
 class TodosContainer extends Component {
+  state = { todos:[] }
 
-  renderTodos = () => this.props.todos.map((todo, id) => <Todo key={id} text={todo} />)
+  renderTodos = () => 
+    this.props.todos.map((todo, id) => (
+    <Todo delete={this.props.delete} key={todo.id} todo={todo} />
+    ));
 
   render() {
     return(
@@ -21,4 +25,8 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps)(TodosContainer);
+const mapDispatchToProps = dispatch => {
+  return {delete: todoId => dispatch({type:'DELETE_TODO', id: todoId})}
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(TodosContainer);
